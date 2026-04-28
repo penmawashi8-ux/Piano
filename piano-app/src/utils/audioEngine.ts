@@ -1,14 +1,16 @@
 import { noteToFreq } from './keyboard';
 
-let ctx: AudioContext | null = null;
+type CtxWithRecDest = AudioContext & { _recDest?: MediaStreamAudioDestinationNode };
+
+let ctx: CtxWithRecDest | null = null;
 const activeNodes = new Map<string, { gain: GainNode; oscs: OscillatorNode[] }>();
 
-export function getAudioContext(): AudioContext {
-  if (!ctx) ctx = new AudioContext();
+export function getAudioContext(): CtxWithRecDest {
+  if (!ctx) ctx = new AudioContext() as CtxWithRecDest;
   return ctx;
 }
 
-export function startNote(note: string, audioCtx: AudioContext): void {
+export function startNote(note: string, audioCtx: CtxWithRecDest): void {
   if (activeNodes.has(note)) return;
   if (audioCtx.state === 'suspended') audioCtx.resume();
 
@@ -23,8 +25,9 @@ export function startNote(note: string, audioCtx: AudioContext): void {
 
   masterGain.connect(filter);
   filter.connect(audioCtx.destination);
+  // Also route to recording destination if active
+  if (audioCtx._recDest) filter.connect(audioCtx._recDest);
 
-  // Attack + decay to sustain
   masterGain.gain.setValueAtTime(0, now);
   masterGain.gain.linearRampToValueAtTime(0.65, now + 0.012);
   masterGain.gain.exponentialRampToValueAtTime(0.35, now + 0.18);
