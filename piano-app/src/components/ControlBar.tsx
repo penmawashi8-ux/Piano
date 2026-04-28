@@ -1,4 +1,4 @@
-import { SONG_NAME } from '../utils/fanfare';
+import type { FanfareItem } from '../utils/fanfare';
 
 interface Props {
   isPlaying: boolean;
@@ -6,15 +6,20 @@ interface Props {
   isRecording: boolean;
   onToggleRecord: () => void;
   elapsed: number;
+  fanfares: FanfareItem[];
+  selectedId: string;
+  onSelectFanfare: (id: string) => void;
 }
 
 function fmtTime(s: number) {
-  const m = Math.floor(s / 60).toString().padStart(2, '0');
-  const sec = (s % 60).toString().padStart(2, '0');
-  return `${m}:${sec}`;
+  return `${Math.floor(s / 60).toString().padStart(2, '0')}:${(s % 60).toString().padStart(2, '0')}`;
 }
 
-export function ControlBar({ isPlaying, onTogglePlay, isRecording, onToggleRecord, elapsed }: Props) {
+export function ControlBar({
+  isPlaying, onTogglePlay,
+  isRecording, onToggleRecord, elapsed,
+  fanfares, selectedId, onSelectFanfare,
+}: Props) {
   return (
     <div className="ctrl">
       <div className="ctrl__side">
@@ -31,14 +36,22 @@ export function ControlBar({ isPlaying, onTogglePlay, isRecording, onToggleRecor
           className={`play-btn${isPlaying ? ' play-btn--on' : ''}`}
           onClick={onTogglePlay}
         >
-          {isPlaying ? (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-          ) : (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          )}
+          {isPlaying
+            ? <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            : <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          }
           {isPlaying ? '停止' : '自動演奏'}
         </button>
-        <span className="ctrl__song">{SONG_NAME}</span>
+        <select
+          className="fanfare-select"
+          value={selectedId}
+          onChange={e => onSelectFanfare(e.target.value)}
+          disabled={isPlaying}
+        >
+          {fanfares.map(f => (
+            <option key={f.id} value={f.id}>{f.name}</option>
+          ))}
+        </select>
       </div>
 
       <div className="ctrl__side ctrl__side--right">

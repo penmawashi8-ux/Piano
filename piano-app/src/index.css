@@ -2,6 +2,9 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 html, body, #root {
@@ -40,14 +43,26 @@ html, body, #root {
   position: absolute;
   bottom: 8px;
   transform: translateX(-50%);
-  border-radius: 5px;
-  padding: 3px 7px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  border-radius: 6px;
+  padding: 4px 7px;
   animation: floatUp 2.8s ease-out forwards;
   pointer-events: none;
   white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.vnote__solfege {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.vnote__name {
+  font-size: 9px;
+  font-weight: 500;
+  opacity: 0.75;
 }
 
 .vnote--white {
@@ -94,10 +109,22 @@ html, body, #root {
   gap: 3px;
 }
 
-.ctrl__song {
+.fanfare-select {
+  background: #0d0d1a;
+  color: #888;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 3px 6px;
   font-size: 10px;
-  color: #666;
-  letter-spacing: 0.05em;
+  max-width: 160px;
+  touch-action: auto;
+  -webkit-user-select: auto;
+  user-select: auto;
+  cursor: pointer;
+}
+
+.fanfare-select:disabled {
+  opacity: 0.4;
 }
 
 .ctrl__icon-btn {

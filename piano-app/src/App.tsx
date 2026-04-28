@@ -4,6 +4,7 @@ import { ControlBar } from './components/ControlBar';
 import { PianoKeyboard } from './components/PianoKeyboard';
 import { getAudioContext, startNote, stopNote } from './utils/audioEngine';
 import { KEY_MAP, getKeyXPercent } from './utils/keyboard';
+import { FANFARES } from './utils/fanfare';
 import { useAutoPlay } from './hooks/useAutoPlay';
 import { useRecorder } from './hooks/useRecorder';
 import type { VisualNote } from './types';
@@ -11,17 +12,17 @@ import type { VisualNote } from './types';
 export function App() {
   const [activeKeys, setActiveKeys] = useState<Set<string>>(new Set());
   const [visualNotes, setVisualNotes] = useState<VisualNote[]>([]);
+  const [selectedFanfareId, setSelectedFanfareId] = useState(FANFARES[0].id);
+
+  const selectedFanfare = FANFARES.find(f => f.id === selectedFanfareId) ?? FANFARES[0];
 
   const addVisualNote = useCallback((note: string) => {
     const key = KEY_MAP.get(note);
     const id = `${note}-${Date.now()}-${Math.random()}`;
-    const vn: VisualNote = {
-      id,
-      note,
-      isBlack: key?.isBlack ?? false,
-      x: getKeyXPercent(note),
-    };
-    setVisualNotes(prev => [...prev.slice(-40), vn]);
+    setVisualNotes(prev => [
+      ...prev.slice(-40),
+      { id, note, isBlack: key?.isBlack ?? false, x: getKeyXPercent(note) },
+    ]);
     setTimeout(() => setVisualNotes(prev => prev.filter(n => n.id !== id)), 3000);
   }, []);
 
@@ -50,10 +51,13 @@ export function App() {
       <NoteVisualizer notes={visualNotes} />
       <ControlBar
         isPlaying={isPlaying}
-        onTogglePlay={isPlaying ? stop : start}
+        onTogglePlay={isPlaying ? () => stop(selectedFanfare.notes) : () => start(selectedFanfare.notes)}
         isRecording={isRecording}
         onToggleRecord={isRecording ? stopRecording : startRecording}
         elapsed={elapsed}
+        fanfares={FANFARES}
+        selectedId={selectedFanfareId}
+        onSelectFanfare={setSelectedFanfareId}
       />
       <PianoKeyboard
         activeKeys={activeKeys}
