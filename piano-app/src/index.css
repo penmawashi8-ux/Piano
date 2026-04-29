@@ -237,7 +237,7 @@ html, body, #root {
 .keyboard {
   position: relative;
   display: flex;
-  height: clamp(110px, 26vh, 190px);
+  height: clamp(140px, 34vh, 240px);
   flex-shrink: 0;
   background: #111;
   border-top: 3px solid #2a2a4a;
@@ -294,7 +294,7 @@ html, body, #root {
 
 /* ── Responsive ──────────────────────── */
 @media (max-height: 500px) {
-  .keyboard { height: 110px; }
+  .keyboard { height: 130px; }
   .ctrl { min-height: 48px; padding: 5px 10px; }
 }
 
