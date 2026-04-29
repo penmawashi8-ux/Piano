@@ -24,7 +24,7 @@ html, body, #root {
 
 /* ── Note Visualizer ─────────────────── */
 .visualizer {
-  flex: 1;
+  flex: 0 0 50vh;
   position: relative;
   overflow: hidden;
   background: radial-gradient(ellipse at center bottom, #1a1a3e 0%, #0d0d1a 70%);
@@ -63,6 +63,20 @@ html, body, #root {
   box-shadow: 0 0 8px rgba(100,100,255,0.3);
 }
 
+.vnote__solfege {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.vnote__name {
+  display: block;
+  font-size: 8px;
+  opacity: 0.65;
+  line-height: 1.1;
+}
+
 /* ── Control Bar ─────────────────────── */
 .ctrl {
   display: flex;
@@ -84,6 +98,24 @@ html, body, #root {
 
 .ctrl__side--right {
   justify-content: flex-end;
+  gap: 8px;
+}
+
+.midi-btn {
+  border: 1px solid #4a4a8a;
+  color: #8888cc;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.midi-btn:hover {
+  border-color: #8888cc;
+  color: #bbbbee;
+  background: rgba(100,100,200,0.12);
 }
 
 .ctrl__center {
@@ -98,6 +130,39 @@ html, body, #root {
   font-size: 10px;
   color: #666;
   letter-spacing: 0.05em;
+}
+
+.fanfare-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fanfare-select {
+  background: #1a1a3a;
+  border: 1px solid #3a3a6a;
+  color: #ccc;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  outline: none;
+  max-width: 130px;
+}
+
+.fanfare-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.fanfare-select:focus {
+  border-color: #6666cc;
+}
+
+.fanfare-composer {
+  font-size: 10px;
+  color: #888;
+  padding-left: 4px;
 }
 
 .ctrl__icon-btn {
