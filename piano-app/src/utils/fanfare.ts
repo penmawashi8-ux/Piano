@@ -8,90 +8,85 @@ export interface Fanfare {
 }
 
 // JRA G1 東コース ファンファーレ（すぎやまこういち作曲）
-// 変ロ長調(Bb major) / 4/4→5/4→2/4
-// 楽譜: 付点音符pickup → 16分音符×4(accent) → 8分音符×2 → 全音符、の繰り返し
+// 変ロ長調(Bb major) / 4/4 → 5/4 → 2/4
+//
+// 4/4部：付点4分音符(pickup) → 16分×4(> > > >) → 8分×2(> >) → 全音符+タイ
+//         このパターンを3回繰り返し、長音が D5 → F5 → G5 と上昇する
+// 5/4/2/4部：コード系の刻みパターン
+//
+// テンポ: 四分音符 ≒ 108 BPM
+//  付点4分 = 0.83s, 4分 = 0.56s, 8分 = 0.28s, 16分 = 0.14s, 全音符 = 2.22s
 const G1_EAST_NOTES: NoteEvent[] = [
-  // === 4/4 section: 第1フレーズ ===
-  // pickup (付点4分)
-  { note: 'Bb4', duration: 0.30 },
-  // 16分音符×4 (accent > > > >)
-  { note: 'Bb4', duration: 0.10 },
-  { note: 'Bb4', duration: 0.10 },
-  { note: 'Bb4', duration: 0.10 },
-  { note: 'Bb4', duration: 0.10 },
-  // 8分音符×2 (> >)
-  { note: 'C5',  duration: 0.20 },
-  { note: 'Bb4', duration: 0.20 },
-  // 全音符（次の小節へタイ含む）
-  { note: 'D5',  duration: 1.65 },
 
-  // === 第2フレーズ（少し上へ）===
-  { note: 'Bb4', duration: 0.30 },
-  { note: 'Bb4', duration: 0.10 },
-  { note: 'Bb4', duration: 0.10 },
-  { note: 'Bb4', duration: 0.10 },
-  { note: 'Bb4', duration: 0.10 },
-  { note: 'D5',  duration: 0.20 },
-  { note: 'Eb5', duration: 0.20 },
-  { note: 'F5',  duration: 1.65 },
+  // ===== 4/4 Section =====
 
-  // === 第3フレーズ（さらに上へ）===
-  { note: 'Bb4', duration: 0.30 },
+  // --- Phrase 1: pickup → ×4 → ×2 → D5(long) ---
+  { note: 'Bb4', duration: 0.79 }, // 付点4分 pickup (accent >)
+
+  { note: 'Bb4', duration: 0.10 }, // 16th (>)
+  { note: 'Bb4', duration: 0.10 }, // 16th (>)
+  { note: 'Bb4', duration: 0.10 }, // 16th (>)
+  { note: 'Bb4', duration: 0.10 }, // 16th (>)
+  { note: 'C5',  duration: 0.24 }, // 8th (>)
+  { note: 'Bb4', duration: 0.24 }, // 8th (>)
+  { note: 'D5',  duration: 2.18 }, // 全音符 + タイ8分 (5拍分)
+
+  // --- Phrase 2: 8threst + pickup → ×4 → ×2 → F5(long) ---
+  { note: 'Bb4', duration: 0.79 }, // 付点4分 pickup
+
   { note: 'Bb4', duration: 0.10 },
   { note: 'Bb4', duration: 0.10 },
   { note: 'Bb4', duration: 0.10 },
   { note: 'Bb4', duration: 0.10 },
-  { note: 'C5',  duration: 0.20 },
-  { note: 'D5',  duration: 0.20 },
-  // 全音符→タイ→8分音符
-  { note: 'Eb5', duration: 0.40 },
-  { note: 'D5',  duration: 0.20 },
-  // 3連符パッセージ（楽譜の3記号部分）
-  { note: 'C5',  duration: 0.14 },
-  { note: 'Bb4', duration: 0.14 },
-  { note: 'A4',  duration: 0.14 },
+  { note: 'D5',  duration: 0.24 }, // 8th (>)
+  { note: 'Eb5', duration: 0.24 }, // 8th (>)
+  { note: 'F5',  duration: 2.18 }, // 全音符 + タイ8分
 
-  // === 5/4 section ===
-  // 全音符 (5/4の長い音)
-  { note: 'Bb4', duration: 0.50 },
-  { note: 'D5',  duration: 0.25 },
-  // アクセント付きコード上音 > > >
-  { note: 'F5',  duration: 0.18 },
-  { note: 'Eb5', duration: 0.18 },
-  { note: 'D5',  duration: 0.18 },
-  { note: 'F5',  duration: 0.25 },
+  // --- Phrase 3: similar → G5(long) ---
+  { note: 'Bb4', duration: 0.79 }, // 付点4分 pickup
 
-  // === 2/4 section ===
-  { note: 'Bb5', duration: 0.40 },
-  { note: 'G5',  duration: 0.20 },
+  { note: 'Bb4', duration: 0.10 },
+  { note: 'Bb4', duration: 0.10 },
+  { note: 'Bb4', duration: 0.10 },
+  { note: 'Bb4', duration: 0.10 },
+  { note: 'C5',  duration: 0.24 },
+  { note: 'D5',  duration: 0.24 },
+  { note: 'G5',  duration: 2.18 }, // 全音符 + タイ8分（3フレーズで最高音）
 
-  // === 5/4 section（繰り返し）===
-  { note: 'Bb4', duration: 0.50 },
-  { note: 'D5',  duration: 0.25 },
-  { note: 'F5',  duration: 0.18 },
-  { note: 'Eb5', duration: 0.18 },
-  { note: 'D5',  duration: 0.18 },
-  { note: 'F5',  duration: 0.25 },
+  // ===== 5/4 Section =====
+  // 5拍子×2小節のパターン (image 2 右側)
+  // 上声：F5 Eb5 / D5 F5 G5 のアクセント刻み
+  { note: 'F5',  duration: 0.52 }, // quarter >
+  { note: 'Eb5', duration: 0.52 }, // quarter >
+  { note: 'D5',  duration: 0.52 }, // quarter >
+  { note: 'F5',  duration: 0.52 }, // quarter >
+  { note: 'G5',  duration: 0.52 }, // quarter >
 
-  // === 2/4 ===
-  { note: 'Bb5', duration: 0.40 },
-  { note: 'G5',  duration: 0.20 },
+  // ===== 2/4 Section =====
+  { note: 'Bb5', duration: 0.52 }, // quarter >
+  { note: 'G5',  duration: 0.52 }, // quarter >
 
-  // === 4/4 coda ===
-  { note: 'F5',  duration: 0.25 },
-  { note: 'Eb5', duration: 0.25 },
-  { note: 'D5',  duration: 0.25 },
-  { note: 'Eb5', duration: 0.25 },
-  // 全音符（タイ）
-  { note: 'F5',  duration: 0.80 },
-  // 3連符フィナーレ
-  { note: 'G5',  duration: 0.14 },
-  { note: 'F5',  duration: 0.14 },
-  { note: 'Eb5', duration: 0.14 },
-  { note: 'F5',  duration: 0.20 },
-  { note: 'G5',  duration: 0.20 },
-  // 最後の長音
-  { note: 'Bb5', duration: 1.40 },
+  // ===== 5/4 Section (repeat) =====
+  { note: 'F5',  duration: 0.52 },
+  { note: 'Eb5', duration: 0.52 },
+  { note: 'D5',  duration: 0.52 },
+  { note: 'F5',  duration: 0.52 },
+  { note: 'G5',  duration: 0.52 },
+
+  // ===== 2/4 =====
+  { note: 'Bb5', duration: 0.52 },
+  { note: 'G5',  duration: 0.52 },
+
+  // ===== 4/4 Coda (image 3) =====
+  // 付点2分 → 4分 → 全音符 + 最後の8分
+  { note: 'F5',  duration: 1.56 }, // 付点2分 (3拍)
+  { note: 'Eb5', duration: 0.52 }, // 4分
+  { note: 'D5',  duration: 0.52 }, // 4分
+  { note: 'Bb4', duration: 0.52 }, // 4分
+
+  // 終わりの長い音 + 最後の短い音
+  { note: 'Bb5', duration: 2.20 }, // 全音符 (最終クライマックス)
+  { note: 'F5',  duration: 0.24 }, // 最後の8分音符
 ];
 
 // JRA G1 西コース ファンファーレ（宮川泰作曲）
