@@ -9,10 +9,11 @@ function midiToNote(n: number): string {
 
 export async function loadMidi(file: File): Promise<NoteEvent[]> {
   const midi = new Midi(await file.arrayBuffer());
-  const track = midi.tracks.reduce((a, b) => a.notes.length >= b.notes.length ? a : b);
-  if (!track.notes.length) return [];
+  // Merge all tracks so Format-1 MIDIs (e.g. left hand + right hand on separate tracks) play together
+  const allNotes = midi.tracks.flatMap(t => t.notes);
+  if (!allNotes.length) return [];
 
-  const sorted = [...track.notes].sort((a, b) => a.time - b.time);
+  const sorted = [...allNotes].sort((a, b) => a.time - b.time);
 
   // Group notes that start within 20ms of each other as simultaneous (chords)
   const groups: { time: number; notes: typeof sorted }[] = [];
