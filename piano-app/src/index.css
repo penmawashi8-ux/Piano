@@ -98,6 +98,24 @@ html, body, #root {
 
 .ctrl__side--right {
   justify-content: flex-end;
+  gap: 8px;
+}
+
+.midi-btn {
+  border: 1px solid #4a4a8a;
+  color: #8888cc;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.midi-btn:hover {
+  border-color: #8888cc;
+  color: #bbbbee;
+  background: rgba(100,100,200,0.12);
 }
 
 .ctrl__center {

@@ -9,6 +9,7 @@ interface Props {
   fanfares: Fanfare[];
   selectedId: string;
   onSelectFanfare: (id: string) => void;
+  onMidiLoad: (file: File) => void;
 }
 
 function fmtTime(s: number) {
@@ -20,7 +21,7 @@ function fmtTime(s: number) {
 export function ControlBar({
   isPlaying, onTogglePlay,
   isRecording, onToggleRecord, elapsed,
-  fanfares, selectedId, onSelectFanfare,
+  fanfares, selectedId, onSelectFanfare, onMidiLoad,
 }: Props) {
   const selected = fanfares.find(f => f.id === selectedId) ?? fanfares[0];
 
@@ -57,6 +58,16 @@ export function ControlBar({
       </div>
 
       <div className="ctrl__side ctrl__side--right">
+        <label className="midi-btn" title="MIDIファイルを読み込む">
+          <input
+            type="file"
+            accept=".mid,.midi"
+            style={{ display: 'none' }}
+            onChange={e => { const f = e.target.files?.[0]; if (f) onMidiLoad(f); e.target.value = ''; }}
+            disabled={isPlaying}
+          />
+          MIDI
+        </label>
         <button
           className={`rec-btn${isRecording ? ' rec-btn--on' : ''}`}
           onClick={onToggleRecord}
