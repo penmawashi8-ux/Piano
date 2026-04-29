@@ -7,40 +7,39 @@ export interface Fanfare {
   notes: NoteEvent[];
 }
 
-// 変ロ長調(Bb major) 移動ド:
-// ド=A#(Bb) レ=C ミ=D ファ=D#(Eb) ソ=F ラ=G シ=A
+// 固定ド: ど=C レ=D ミ=E ファ=F ソ=G ラ=A シ=B ♭シ=A#(Bb) ♭ミ=D#(Eb)
 //
 // JRA G1 東コース ファンファーレ（すぎやまこういち 1986）
-// 譜面より:
+// 譜面より（固定ド）:
 //   ① レ— レ レ レ— レ レ ファ—
-//   ② ミ ド ソ ファ—
-//   ③ ミ ド ソ レ—
-//   ④ ソ ソ レ ファ ミ ド ソ レ—
+//   ② ミ ど ソ ファ—
+//   ③ ミ ど ソ レ—
+//   ④ ソ ソ レ ファ ミ ど ソ レ—
 //   ⑤ レ ファ ミ ラ ファ ソ
 //   ⑥ ソ ソ ソ ソ—
 const G1_EAST_NOTES: NoteEvent[] = [
   // ① レ— レ レ レ— レ レ ファ—
-  { note: 'C5', duration: 0.65 },
-  { note: 'C5', duration: 0.3 }, { note: 'C5', duration: 0.3 }, { note: 'C5', duration: 0.65 },
-  { note: 'C5', duration: 0.3 }, { note: 'C5', duration: 0.3 }, { note: 'D#5', duration: 1.0 },
-  // ② ミ ド ソ ファ—
-  { note: 'D5', duration: 0.25 }, { note: 'A#4', duration: 0.25 },
-  { note: 'F5', duration: 0.3  }, { note: 'D#5', duration: 0.8 },
-  // ③ ミ ド ソ レ—
-  { note: 'D5', duration: 0.25 }, { note: 'A#4', duration: 0.25 },
-  { note: 'F5', duration: 0.3  }, { note: 'C5',  duration: 0.8 },
-  // ④ ソ ソ レ ファ ミ ド ソ レ—
-  { note: 'F5', duration: 0.35 }, { note: 'F5', duration: 0.35 },
-  { note: 'C5', duration: 0.2  }, { note: 'D#5', duration: 0.2 },
-  { note: 'D5', duration: 0.2  }, { note: 'A#4', duration: 0.2 },
-  { note: 'F5', duration: 0.2  }, { note: 'C5',  duration: 0.7 },
+  { note: 'D5', duration: 1.0 },
+  { note: 'D5', duration: 0.4 }, { note: 'D5', duration: 0.4 }, { note: 'D5', duration: 1.0 },
+  { note: 'D5', duration: 0.4 }, { note: 'D5', duration: 0.4 }, { note: 'F5', duration: 1.5 },
+  // ② ミ ど ソ ファ—
+  { note: 'E5', duration: 0.4 }, { note: 'C5', duration: 0.4 },
+  { note: 'G5', duration: 0.4 }, { note: 'F5', duration: 1.2 },
+  // ③ ミ ど ソ レ—
+  { note: 'E5', duration: 0.4 }, { note: 'C5', duration: 0.4 },
+  { note: 'G5', duration: 0.4 }, { note: 'D5', duration: 1.2 },
+  // ④ ソ ソ レ ファ ミ ど ソ レ—
+  { note: 'G5', duration: 0.5 }, { note: 'G5', duration: 0.5 },
+  { note: 'D5', duration: 0.3 }, { note: 'F5', duration: 0.3 },
+  { note: 'E5', duration: 0.3 }, { note: 'C5', duration: 0.3 },
+  { note: 'G5', duration: 0.3 }, { note: 'D5', duration: 1.0 },
   // ⑤ レ ファ ミ ラ ファ ソ
-  { note: 'C5',  duration: 0.2 }, { note: 'D#5', duration: 0.2 },
-  { note: 'D5',  duration: 0.2 }, { note: 'G5',  duration: 0.4 },
-  { note: 'D#5', duration: 0.2 }, { note: 'F5',  duration: 0.6 },
+  { note: 'D5', duration: 0.3 }, { note: 'F5', duration: 0.3 },
+  { note: 'E5', duration: 0.3 }, { note: 'A5', duration: 0.5 },
+  { note: 'F5', duration: 0.3 }, { note: 'G5', duration: 0.8 },
   // ⑥ ソ ソ ソ ソ—
-  { note: 'F5', duration: 0.25 }, { note: 'F5', duration: 0.25 },
-  { note: 'F5', duration: 0.25 }, { note: 'F5', duration: 1.3 },
+  { note: 'G5', duration: 0.35 }, { note: 'G5', duration: 0.35 },
+  { note: 'G5', duration: 0.35 }, { note: 'G5', duration: 1.5 },
 ];
 
 // JRA G1 西コース ファンファーレ（宮川泰 1987）
@@ -84,34 +83,34 @@ const G1_WEST_NOTES: NoteEvent[] = [
 
 // JRA G2 東コース ファンファーレ（すぎやまこういち）
 const G2_EAST_NOTES: NoteEvent[] = [
+  { note: 'D5', duration: 0.5 }, { note: 'D5', duration: 0.25 }, { note: 'D5', duration: 0.5 },
+  { note: 'F5', duration: 0.8 },
   { note: 'C5', duration: 0.5 }, { note: 'C5', duration: 0.25 }, { note: 'C5', duration: 0.5 },
-  { note: 'D#5', duration: 0.8 },
-  { note: 'A#4', duration: 0.5 }, { note: 'A#4', duration: 0.25 }, { note: 'A#4', duration: 0.5 },
-  { note: 'C5', duration: 0.7 },
-  { note: 'D5', duration: 0.25 }, { note: 'A#4', duration: 0.25 },
-  { note: 'F5', duration: 0.3 }, { note: 'D#5', duration: 0.5 },
-  { note: 'D5', duration: 0.25 }, { note: 'A#4', duration: 0.25 }, { note: 'C5', duration: 0.25 },
-  { note: 'D5', duration: 0.3 }, { note: 'F5', duration: 0.3 }, { note: 'A#4', duration: 0.3 },
-  { note: 'C5', duration: 0.8 },
+  { note: 'D5', duration: 0.7 },
+  { note: 'E5', duration: 0.25 }, { note: 'C5', duration: 0.25 },
+  { note: 'G5', duration: 0.3 }, { note: 'F5', duration: 0.5 },
+  { note: 'E5', duration: 0.25 }, { note: 'C5', duration: 0.25 }, { note: 'D5', duration: 0.25 },
+  { note: 'E5', duration: 0.3 }, { note: 'G5', duration: 0.3 }, { note: 'C5', duration: 0.3 },
+  { note: 'D5', duration: 0.8 },
 ];
 
 // JRA G3 東コース ファンファーレ（すぎやまこういち）
 const G3_EAST_NOTES: NoteEvent[] = [
-  { note: 'C5', duration: 0.45 }, { note: 'C5', duration: 0.2 }, { note: 'C5', duration: 0.45 },
-  { note: 'D#5', duration: 0.65 },
-  { note: 'A#4', duration: 0.4 }, { note: 'C5', duration: 0.25 }, { note: 'D5', duration: 0.25 },
-  { note: 'A#4', duration: 0.25 }, { note: 'F5', duration: 0.3 }, { note: 'C5', duration: 0.55 },
-  { note: 'G5', duration: 0.45 }, { note: 'F5', duration: 0.25 }, { note: 'D#5', duration: 0.25 },
-  { note: 'F5', duration: 0.7 },
+  { note: 'D5', duration: 0.45 }, { note: 'D5', duration: 0.2 }, { note: 'D5', duration: 0.45 },
+  { note: 'F5', duration: 0.65 },
+  { note: 'C5', duration: 0.4 }, { note: 'D5', duration: 0.25 }, { note: 'E5', duration: 0.25 },
+  { note: 'C5', duration: 0.25 }, { note: 'G5', duration: 0.3 }, { note: 'D5', duration: 0.55 },
+  { note: 'A5', duration: 0.45 }, { note: 'G5', duration: 0.25 }, { note: 'F5', duration: 0.25 },
+  { note: 'G5', duration: 0.7 },
 ];
 
 // JRA オープン ファンファーレ
 const OPEN_NOTES: NoteEvent[] = [
-  { note: 'C5', duration: 0.35 }, { note: 'C5', duration: 0.2 }, { note: 'C5', duration: 0.35 },
-  { note: 'D#5', duration: 0.55 },
-  { note: 'A#4', duration: 0.35 }, { note: 'C5', duration: 0.2 },
-  { note: 'D5', duration: 0.3 }, { note: 'C5', duration: 0.2 },
-  { note: 'A#4', duration: 0.2 }, { note: 'F5', duration: 0.6 },
+  { note: 'D5', duration: 0.35 }, { note: 'D5', duration: 0.2 }, { note: 'D5', duration: 0.35 },
+  { note: 'F5', duration: 0.55 },
+  { note: 'C5', duration: 0.35 }, { note: 'D5', duration: 0.2 },
+  { note: 'E5', duration: 0.3 }, { note: 'D5', duration: 0.2 },
+  { note: 'C5', duration: 0.2 }, { note: 'G5', duration: 0.6 },
 ];
 
 export const FANFARES: Fanfare[] = [
