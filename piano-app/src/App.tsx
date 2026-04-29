@@ -63,7 +63,21 @@ export function App() {
     });
   }, []);
 
-  const { isPlaying, start, stop } = useAutoPlay(handleNoteOn, handleNoteOff);
+  // Visual-only variants for auto-play (audio is scheduled precisely inside useAutoPlay)
+  const handleVisualNoteOn = useCallback((note: string) => {
+    setActiveKeys(prev => new Set(prev).add(note));
+    addVisualNote(note);
+  }, [addVisualNote]);
+
+  const handleVisualNoteOff = useCallback((note: string) => {
+    setActiveKeys(prev => {
+      const next = new Set(prev);
+      next.delete(note);
+      return next;
+    });
+  }, []);
+
+  const { isPlaying, start, stop } = useAutoPlay(handleVisualNoteOn, handleVisualNoteOff);
   const { isRecording, elapsed, startRecording, stopRecording } = useRecorder();
 
   return (

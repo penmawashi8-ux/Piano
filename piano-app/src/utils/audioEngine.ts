@@ -2,6 +2,10 @@ import { noteToFreq } from './keyboard';
 
 type CtxWithRecDest = AudioContext & { _recDest?: MediaStreamAudioDestinationNode };
 
+export interface ScheduledNote {
+  cancelEarly: () => void;
+}
+
 let ctx: CtxWithRecDest | null = null;
 const activeNodes = new Map<string, { gain: GainNode; oscs: OscillatorNode[] }>();
 
@@ -53,6 +57,60 @@ export function startNote(note: string, audioCtx: CtxWithRecDest): void {
   });
 
   activeNodes.set(note, { gain: masterGain, oscs });
+}
+
+const SPECS: [number, OscillatorType, number][] = [
+  [1, 'triangle', 1.0],
+  [2, 'sine', 0.45],
+  [3, 'sine', 0.18],
+  [4, 'sine', 0.07],
+];
+
+export function scheduleNote(
+  note: string,
+  audioCtx: CtxWithRecDest,
+  startWhen: number,
+  stopWhen: number,
+): ScheduledNote {
+  const freq = noteToFreq(note);
+  const masterGain = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.value = 5500;
+  filter.Q.value = 0.3;
+  masterGain.connect(filter);
+  filter.connect(audioCtx.destination);
+  if (audioCtx._recDest) filter.connect(audioCtx._recDest);
+
+  masterGain.gain.setValueAtTime(0, startWhen);
+  masterGain.gain.linearRampToValueAtTime(0.65, startWhen + 0.012);
+  masterGain.gain.exponentialRampToValueAtTime(0.35, startWhen + 0.18);
+  masterGain.gain.setValueAtTime(0.35, stopWhen);
+  masterGain.gain.exponentialRampToValueAtTime(0.001, stopWhen + 0.4);
+
+  const oscs: OscillatorNode[] = [];
+  SPECS.forEach(([mult, type, gain]) => {
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq * mult;
+    g.gain.value = gain;
+    osc.connect(g);
+    g.connect(masterGain);
+    osc.start(startWhen);
+    osc.stop(stopWhen + 0.45);
+    oscs.push(osc);
+  });
+
+  return {
+    cancelEarly: () => {
+      const now = audioCtx.currentTime;
+      masterGain.gain.cancelScheduledValues(now);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, now);
+      masterGain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+      oscs.forEach(osc => { try { osc.stop(now + 0.05); } catch { /* already stopped */ } });
+    },
+  };
 }
 
 export function stopNote(note: string, audioCtx: AudioContext): void {
