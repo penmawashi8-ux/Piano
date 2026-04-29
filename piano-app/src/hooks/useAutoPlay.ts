@@ -9,17 +9,19 @@ export function useAutoPlay(
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const playingRef = useRef(false);
 
-  const start = useCallback((notes: NoteEvent[]) => {
+  const start = useCallback((events: NoteEvent[]) => {
     if (playingRef.current) return;
     playingRef.current = true;
     setIsPlaying(true);
 
     let t = 0;
-    notes.forEach(({ note, duration }) => {
-      timers.current.push(
-        setTimeout(() => onNoteOn(note), t * 1000),
-        setTimeout(() => onNoteOff(note), (t + duration * 0.82) * 1000),
-      );
+    events.forEach(({ notes, duration }) => {
+      notes.forEach(note => {
+        timers.current.push(
+          setTimeout(() => onNoteOn(note), t * 1000),
+          setTimeout(() => onNoteOff(note), (t + duration * 0.82) * 1000),
+        );
+      });
       t += duration + 0.04;
     });
 
@@ -31,10 +33,10 @@ export function useAutoPlay(
     );
   }, [onNoteOn, onNoteOff]);
 
-  const stop = useCallback((notes: NoteEvent[]) => {
+  const stop = useCallback((events: NoteEvent[]) => {
     timers.current.forEach(clearTimeout);
     timers.current = [];
-    notes.forEach(({ note }) => onNoteOff(note));
+    events.forEach(({ notes }) => notes.forEach(note => onNoteOff(note)));
     playingRef.current = false;
     setIsPlaying(false);
   }, [onNoteOff]);

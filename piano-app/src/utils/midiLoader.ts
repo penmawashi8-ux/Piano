@@ -12,9 +12,25 @@ export async function loadMidi(file: File): Promise<NoteEvent[]> {
   const track = midi.tracks.reduce((a, b) => a.notes.length >= b.notes.length ? a : b);
   if (!track.notes.length) return [];
 
-  const notes = [...track.notes].sort((a, b) => a.time - b.time);
-  return notes.map((n, i) => ({
-    note: midiToNote(n.midi),
-    duration: Math.max(0.05, notes[i + 1] ? notes[i + 1].time - n.time : n.duration),
-  }));
+  const sorted = [...track.notes].sort((a, b) => a.time - b.time);
+
+  // Group notes that start within 20ms of each other as simultaneous (chords)
+  const groups: { time: number; notes: typeof sorted }[] = [];
+  for (const n of sorted) {
+    const last = groups[groups.length - 1];
+    if (last && n.time - last.time < 0.02) {
+      last.notes.push(n);
+    } else {
+      groups.push({ time: n.time, notes: [n] });
+    }
+  }
+
+  return groups.map((group, i) => {
+    const nextTime = groups[i + 1]?.time;
+    const maxDuration = Math.max(...group.notes.map(n => n.duration));
+    return {
+      notes: group.notes.map(n => midiToNote(n.midi)),
+      duration: Math.max(0.05, nextTime != null ? nextTime - group.time : maxDuration),
+    };
+  });
 }
