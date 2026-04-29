@@ -63,6 +63,20 @@ html, body, #root {
   box-shadow: 0 0 8px rgba(100,100,255,0.3);
 }
 
+.vnote__solfege {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.vnote__name {
+  display: block;
+  font-size: 8px;
+  opacity: 0.65;
+  line-height: 1.1;
+}
+
 /* ── Control Bar ─────────────────────── */
 .ctrl {
   display: flex;
@@ -98,6 +112,39 @@ html, body, #root {
   font-size: 10px;
   color: #666;
   letter-spacing: 0.05em;
+}
+
+.fanfare-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fanfare-select {
+  background: #1a1a3a;
+  border: 1px solid #3a3a6a;
+  color: #ccc;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  outline: none;
+  max-width: 130px;
+}
+
+.fanfare-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.fanfare-select:focus {
+  border-color: #6666cc;
+}
+
+.fanfare-composer {
+  font-size: 10px;
+  color: #888;
+  padding-left: 4px;
 }
 
 .ctrl__icon-btn {

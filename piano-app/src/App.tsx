@@ -6,11 +6,15 @@ import { getAudioContext, startNote, stopNote } from './utils/audioEngine';
 import { KEY_MAP, getKeyXPercent } from './utils/keyboard';
 import { useAutoPlay } from './hooks/useAutoPlay';
 import { useRecorder } from './hooks/useRecorder';
+import { FANFARES } from './utils/fanfare';
 import type { VisualNote } from './types';
 
 export function App() {
   const [activeKeys, setActiveKeys] = useState<Set<string>>(new Set());
   const [visualNotes, setVisualNotes] = useState<VisualNote[]>([]);
+  const [selectedId, setSelectedId] = useState(FANFARES[0].id);
+
+  const selectedFanfare = FANFARES.find(f => f.id === selectedId) ?? FANFARES[0];
 
   const addVisualNote = useCallback((note: string) => {
     const key = KEY_MAP.get(note);
@@ -50,10 +54,13 @@ export function App() {
       <NoteVisualizer notes={visualNotes} />
       <ControlBar
         isPlaying={isPlaying}
-        onTogglePlay={isPlaying ? stop : start}
+        onTogglePlay={isPlaying ? () => stop(selectedFanfare.notes) : () => start(selectedFanfare.notes)}
         isRecording={isRecording}
         onToggleRecord={isRecording ? stopRecording : startRecording}
         elapsed={elapsed}
+        fanfares={FANFARES}
+        selectedId={selectedId}
+        onSelectFanfare={setSelectedId}
       />
       <PianoKeyboard
         activeKeys={activeKeys}
