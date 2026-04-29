@@ -24,7 +24,7 @@ html, body, #root {
 
 /* ── Note Visualizer ─────────────────── */
 .visualizer {
-  flex: 0 0 30vh;
+  flex: 0 0 50vh;
   position: relative;
   overflow: hidden;
   background: radial-gradient(ellipse at center bottom, #1a1a3e 0%, #0d0d1a 70%);
