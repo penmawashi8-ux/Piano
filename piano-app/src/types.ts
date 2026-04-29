@@ -1,6 +1,7 @@
 export interface NoteEvent {
   notes: string[];
   duration: number;
+  noteDuration?: number; // actual hold time; falls back to duration * 0.82
 }
 
 export interface VisualNote {

@@ -28,10 +28,12 @@ export async function loadMidi(file: File): Promise<NoteEvent[]> {
 
   return groups.map((group, i) => {
     const nextTime = groups[i + 1]?.time;
-    const maxDuration = Math.max(...group.notes.map(n => n.duration));
+    const maxNoteDur = Math.max(...group.notes.map(n => n.duration));
+    const ioiDuration = nextTime != null ? nextTime - group.time : maxNoteDur;
     return {
       notes: group.notes.map(n => midiToNote(n.midi)),
-      duration: Math.max(0.05, nextTime != null ? nextTime - group.time : maxDuration),
+      duration: Math.max(0.05, ioiDuration),
+      noteDuration: Math.max(0.03, maxNoteDur),
     };
   });
 }

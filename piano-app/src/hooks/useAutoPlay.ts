@@ -15,14 +15,15 @@ export function useAutoPlay(
     setIsPlaying(true);
 
     let t = 0;
-    events.forEach(({ notes, duration }) => {
+    events.forEach(({ notes, duration, noteDuration }) => {
+      const offDelay = noteDuration ?? duration * 0.82;
       notes.forEach(note => {
         timers.current.push(
           setTimeout(() => onNoteOn(note), t * 1000),
-          setTimeout(() => onNoteOff(note), (t + duration * 0.82) * 1000),
+          setTimeout(() => onNoteOff(note), (t + offDelay) * 1000),
         );
       });
-      t += duration + 0.04;
+      t += duration;
     });
 
     timers.current.push(
